@@ -81,4 +81,34 @@ export class Tree {
             if (node.right) queue.push(node.right);
         }
     }
+
+    inOrder(callback, node = this.root) {
+        if (!callback || typeof callback !== 'function') {
+            throw new Error('Callback function is required');
+        }
+    
+        if (node.left) this.inOrder(callback, node.left);
+        callback(node);
+        if (node.right) this.inOrder(callback, node.right);
+    }
+    
+    preOrder(callback, node = this.root) {
+        if (!callback || typeof callback !== 'function') {
+            throw new Error('Callback function is required');
+        }
+    
+        callback(node);
+        if (node.left) this.preOrder(callback, node.left);
+        if (node.right) this.preOrder(callback, node.right);
+    }
+    
+    postOrder(callback, node = this.root) {
+        if (!callback || typeof callback !== 'function') {
+            throw new Error('Callback function is required');
+        }
+    
+        if (node.left) this.postOrder(callback, node.left);
+        if (node.right) this.postOrder(callback, node.right);
+        callback(node);
+    }
 }
