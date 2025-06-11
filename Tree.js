@@ -133,4 +133,26 @@ export class Tree {
         }
         else return this.depth(value, node.right, currentDepth + 1);
     }
+
+    isBalanced(node = this.root) {
+        const checkBalance = (node) => {
+            if (!node) return 0;
+        
+            const left = checkBalance(node.left);
+            if (left === -1) return -1;
+        
+            const right = checkBalance(node.right);
+            if (right === -1) return -1;
+        
+            return Math.abs(left - right) > 1 ? -1 : 1 + Math.max(left, right);
+        };
+    
+        return checkBalance(node) !== -1;
+    }
+    
+    rebalance() {
+        const result = [];
+        this.inOrder((node) => result.push(node.data));
+        this.root = this.buildTree(result);
+    }
 }
