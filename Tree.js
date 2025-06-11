@@ -111,4 +111,26 @@ export class Tree {
         if (node.right) this.postOrder(callback, node.right);
         callback(node);
     }
+
+    height(value) {
+        const node = this.find(value);
+        if (!node) return null;
+    
+        const getHeight = (node) => {
+            if (!node) return -1;
+            return 1 + Math.max(getHeight(node.left), getHeight(node.right));
+        };
+    
+        return getHeight(node);
+    }
+    
+    depth(value, node = this.root, currentDepth = 0) {
+        if (!node) return null;
+        if (value === node.data) return currentDepth;
+    
+        if (value < node.data) {
+            return this.depth(value, node.left, currentDepth + 1);
+        }
+        else return this.depth(value, node.right, currentDepth + 1);
+    }
 }
