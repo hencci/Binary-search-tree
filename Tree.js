@@ -67,4 +67,18 @@ export class Tree {
         return value < node.data ?
         this.find(value, node.left) : this.find(value, node.right);
     }
+
+    levelOrder(callback) {
+        if (!callback || typeof callback !== 'function') {
+            throw new Error('Callback function is required');
+        }
+    
+        const queue = [this.root];
+        while (queue.length) {
+            const node = queue.shift();
+            callback(node);
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+        }
+    }
 }
