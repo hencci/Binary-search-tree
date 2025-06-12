@@ -1,4 +1,4 @@
-import { Node } from "./Node";
+import { Node } from "./Node.js";
 
 export class Tree {
     constructor(array) {
@@ -22,14 +22,12 @@ export class Tree {
         if (!node) return new Node(value);
 
         if (value === node.data) return node;
-
-        if (value < node.data) {
+        else if (value < node.data) {
             node.left = this.insert(value, node.left);
         }
         else {
             node.right = this.insert(value, node.right);
         }
-
         return node;
     }
 
@@ -56,59 +54,66 @@ export class Tree {
     }
 
     minValueNode(node) {
-        let current = node;
-        while (current.left) current = current.left;
-        return current;
+        while (node.left) node = node.left;
+        return node;
     }
     
     find(value, node = this.root) {
-        if (!node || node.data === value) return node;
+        if (!node) return null;
+        if (value === node.data) return node;
     
         return value < node.data ?
         this.find(value, node.left) : this.find(value, node.right);
     }
 
     levelOrder(callback) {
-        if (!callback || typeof callback !== 'function') {
-            throw new Error('Callback function is required');
+        if (typeof callback !== 'function') {
+            throw new Error('A callback function is required');
         }
     
         const queue = [this.root];
-        while (queue.length) {
+        while (queue.length > 0) {
             const node = queue.shift();
+            if (!node) continue;
             callback(node);
             if (node.left) queue.push(node.left);
             if (node.right) queue.push(node.right);
         }
-    }
+    }  
 
     inOrder(callback, node = this.root) {
-        if (!callback || typeof callback !== 'function') {
-            throw new Error('Callback function is required');
+        if (typeof callback !== 'function') {
+            throw new Error('A callback function is required');
         }
     
-        if (node.left) this.inOrder(callback, node.left);
+        if (!node) return; //early exit
+    
+        this.inOrder(callback, node.left);
         callback(node);
-        if (node.right) this.inOrder(callback, node.right);
+        this.inOrder(callback, node.right);
     }
     
     preOrder(callback, node = this.root) {
-        if (!callback || typeof callback !== 'function') {
-            throw new Error('Callback function is required');
+        if (typeof callback !== 'function') {
+            throw new Error('A callback function is required');
         }
     
+        if (!node) return; //early exit
+    
         callback(node);
-        if (node.left) this.preOrder(callback, node.left);
-        if (node.right) this.preOrder(callback, node.right);
+        this.preOrder(callback, node.left);
+        this.preOrder(callback, node.right);
     }
     
     postOrder(callback, node = this.root) {
-        if (!callback || typeof callback !== 'function') {
-            throw new Error('Callback function is required');
+        if (typeof callback !== 'function') {
+            throw new Error('A callback function is required');
         }
     
-        if (node.left) this.postOrder(callback, node.left);
-        if (node.right) this.postOrder(callback, node.right);
+        if (!node) return; //early exit
+    
+        this.postOrder(callback, node.left);
+        this.postOrder(callback, node.right);
         callback(node);
     }
 
@@ -120,7 +125,6 @@ export class Tree {
             if (!node) return -1;
             return 1 + Math.max(getHeight(node.left), getHeight(node.right));
         };
-    
         return getHeight(node);
     }
     
