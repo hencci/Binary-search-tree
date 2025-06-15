@@ -3,9 +3,9 @@ import { prettyPrint } from "./prettyPrint.js";
 
 // Generate an array of unique random numbers
 const generateRandomArray = (size = 15) => {
-    Array.from(new Set(Array.from({ length: size }, 
+    return Array.from(new Set(Array.from({ length: size }, 
     () => Math.floor(Math.random() * 100))));
-}
+};
 // Callback to print node data
 const printNode = (node) => {
     if (node) console.log(node.data);
